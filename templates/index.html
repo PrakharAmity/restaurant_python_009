@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Goodfield — Service desk</title>
+  <link rel="stylesheet" href="./static/styles.css">
+  <script defer src="./static/app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="./" aria-label="Goodfield home"><span class="brand-mark">g</span><span>goodfield<span class="brand-dot">.</span></span></a>
+      <div class="location-switch"><span class="location-icon">⌖</span><span><strong>Goodfield Kitchen</strong><small>East Village · New York</small></span><span class="chevron">⌄</span></div>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-item active" href="#overview"><span class="nav-icon">▦</span>Overview</a>
+        <a class="nav-item" href="#orders"><span class="nav-icon">▤</span>Orders<span id="nav-orders" class="nav-count">4</span></a>
+        <a class="nav-item" href="#menu"><span class="nav-icon">♨</span>Menu</a>
+        <a class="nav-item" href="#insights"><span class="nav-icon">⌁</span>Insights</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-promo"><span class="promo-spark">✳</span><strong>Service is looking good</strong><p>You're on track for a smooth lunch rush.</p><div class="promo-meter"><i></i></div><small>86% of today's orders on time</small></div>
+        <button class="profile"><span class="avatar">JC</span><span><strong>Jordan Cruz</strong><small>Floor manager</small></span><span class="chevron">···</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div class="breadcrumbs">Goodfield Kitchen <span>/</span> <strong>Overview</strong></div><div class="top-actions"><span class="service-live"><i></i> Service live</span><button class="icon-button" aria-label="Notifications">♧<b></b></button><span class="today-date">MON, OCT 14</span></div></header>
+      <section class="page-heading"><div><div class="eyebrow">MONDAY SERVICE <span>·</span> LUNCH</div><h1>Good afternoon, Jordan <span class="wave">✦</span></h1><p>Here's what's happening across your floor today.</p></div><button class="primary-button" id="new-order-button"><span>＋</span> New order</button></section>
+
+      <section class="metric-grid" aria-label="Today's service metrics">
+        <article class="metric-card"><div class="metric-top"><span>NET SALES</span><span class="metric-icon orange">↗</span></div><div class="metric-number" id="sales-value">$2,840<span class="trend">↑ 12.8%</span></div><div class="metric-note">vs. $2,518 same day last week</div><div class="sparkline"><svg viewBox="0 0 220 44" preserveAspectRatio="none"><path d="M0 35 C15 34 17 20 30 24 S48 33 61 18 S78 26 92 18 S114 21 128 11 S145 21 160 15 S179 21 190 8 S208 13 220 3"/></svg></div></article>
+        <article class="metric-card"><div class="metric-top"><span>ORDERS TODAY</span><span class="metric-icon green">▤</span></div><div class="metric-number" id="orders-value">48<span class="trend">↑ 8.2%</span></div><div class="metric-note">Across dine-in, pickup & delivery</div><div class="mini-bars"><i style="height:35%"></i><i style="height:54%"></i><i style="height:43%"></i><i style="height:68%"></i><i style="height:49%"></i><i style="height:78%"></i><i style="height:62%"></i><i style="height:94%"></i><i style="height:70%"></i><i style="height:83%"></i><i style="height:59%"></i><i class="bar-active" style="height:98%"></i></div></article>
+        <article class="metric-card"><div class="metric-top"><span>AVG. TICKET TIME</span><span class="metric-icon blue">◷</span></div><div class="metric-number">18<span class="unit"> min</span><span class="trend">↓ 2 min</span></div><div class="metric-note">Target is under 20 minutes</div><div class="time-track"><span></span><i></i><b>20m target</b></div></article>
+        <article class="metric-card"><div class="metric-top"><span>OPEN TABLES</span><span class="metric-icon purple">⌑</span></div><div class="metric-number">7<span class="unit"> / 12</span><span class="trend neutral">5 available</span></div><div class="metric-note">2 tables waiting on checks</div><div class="table-dots"><i class="occupied"></i><i class="occupied"></i><i class="occupied"></i><i class="occupied"></i><i class="occupied"></i><i class="occupied"></i><i class="occupied"></i><i></i><i></i><i></i><i></i><i></i></div></article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel orders-panel" id="orders">
+          <div class="panel-heading"><div><h2>Live orders <span class="live-pip"></span></h2><p>Your floor, updated in real time</p></div><button class="text-button" id="view-all">View all <span>→</span></button></div>
+          <div class="order-tabs" role="tablist"><button class="tab active" data-filter="all">All <span id="all-count">4</span></button><button class="tab" data-filter="new">New <span id="new-count">1</span></button><button class="tab" data-filter="preparing">Preparing <span id="preparing-count">2</span></button><button class="tab" data-filter="ready">Ready <span id="ready-count">1</span></button></div>
+          <div class="order-list" id="order-list" aria-live="polite"></div>
+          <div class="panel-footer"><span><i class="refresh-dot"></i> Auto-refreshing every few seconds</span><button class="text-button" id="refresh-button">Refresh now ↻</button></div>
+        </section>
+
+        <div class="right-column">
+          <section class="panel kitchen-panel"><div class="panel-heading compact"><div><h2>Kitchen pulse</h2><p>Tickets by urgency</p></div><span class="kitchen-status">ON TRACK</span></div><div class="kitchen-summary"><div><strong id="active-tickets">3</strong><span>active tickets</span></div><div class="divider"></div><div><strong>12<span>m</span></strong><span>avg. prep time</span></div></div><div class="queue-heading"><span>UP NEXT</span><span>QUEUE POSITION</span></div><div id="kitchen-queue" class="queue-list"></div></section>
+          <section class="panel popular-panel" id="insights"><div class="panel-heading compact"><div><h2>Guest favorites</h2><p>Top sellers this service</p></div><button class="more-button" aria-label="More options">···</button></div><div id="popular-list" class="popular-list"></div><div class="batch-note"><span>✦</span><span><strong>Prep plan</strong><small>Best batch under 10 min: <b id="prep-batch">—</b></small></span></div></section>
+        </div>
+      </div>
+      <footer class="page-footer"><span>GOODFIELD SERVICE DESK <i>·</i> V 2.4.0</span><span>Need a hand? <a href="#support">Visit the help center</a></span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="order-modal" hidden>
+    <section class="order-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-heading"><div><span class="eyebrow">GOODFIELD KITCHEN</span><h2 id="modal-title">Start an order</h2></div><button class="close-button" id="close-modal" aria-label="Close">×</button></div>
+      <label class="field-label" for="guest-name">Guest name</label><input id="guest-name" class="text-input" placeholder="e.g. Sam Taylor">
+      <div class="menu-heading"><div><h3>Menu</h3><span>Tap an item to add it</span></div><label class="search-box"><span>⌕</span><input id="menu-search" placeholder="Search menu"></label></div>
+      <label class="modifier-option"><input id="add-avocado" type="checkbox"> Add avocado to chicken sandwich <b>+$2</b></label>
+      <div class="modal-menu" id="modal-menu"></div>
+      <div class="cart-footer"><div><span id="cart-count">0 items</span><strong id="cart-total">$0.00</strong></div><button class="primary-button" id="submit-order" disabled>Place order <span>→</span></button></div>
+      <div id="order-message" class="order-message" role="status"></div>
+    </section>
+  </div>
+</body>
+</html>

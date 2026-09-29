@@ -1,0 +1,10 @@
+{
+  "challenge_id": "restaurant-order-dashboard-python",
+  "runtime_config": {
+    "runtime_type": "python-flask",
+    "install_command": "pip install -r requirements.txt",
+    "start_command": "bash start.sh",
+    "test_command": "pytest -s -p no:terminal",
+    "ports": [{ "container_port": 5000, "type": "preview" }]
+  }
+}
