@@ -30,27 +30,27 @@ QA engineers and floor staff have flagged several issues in the Goodfield Kitche
 
 #### Issue 1: Menu Search Fails on Non-Alphabetical Menu Items
 - **User Symptom**: When searching for menu items like "sandwich" in the order modal, matching items fail to appear in the results because binary search assumes the menu is sorted alphabetically, while the restaurant menu is ordered by category.
-- **Task**: Update `search_menu_items` to return every menu item whose name contains the search query substring, case-insensitively, regardless of how the menu is ordered.
+- **Task**: Update `search_menu_items` in `catalog.py` to return every menu item whose name contains the search query substring, case-insensitively, regardless of how the menu is ordered.
 
 #### Issue 2: Popular Dishes Undercounts Quantities and Repeated Orders
 - **User Symptom**: The "Guest favorites" panel ranks dishes incorrectly because the calculation collapses items into sets, ignoring item quantities and repeat orders, undercounting total units sold.
-- **Task**: Fix `best_sellers` to tally the actual units sold across all order lines in sales history and ensure deterministic ordering for ties.
+- **Task**: Fix `best_sellers` in `analytics.py` to tally the actual units sold across all order lines in sales history and ensure deterministic ordering for ties.
 
 #### Issue 3: Kitchen Queue Sorts Tickets in Reverse Urgency
 - **User Symptom**: In the "Kitchen pulse" panel, low-urgency tickets appear ahead of urgent tickets because the queue is sorted in ascending priority order instead of descending, and FIFO order is not maintained for equal-priority tickets.
-- **Task**: Correct `kitchen_queue` to sort tickets by urgency (priority) in descending order while preserving first-in, first-out (FIFO) order for tickets with equal priority.
+- **Task**: Correct `kitchen_queue` in `kitchen.py` to sort tickets by urgency (priority) in descending order while preserving first-in, first-out (FIFO) order for tickets with equal priority.
 
 #### Issue 4: Prep Planning Selects Suboptimal Ticket Batches
 - **User Symptom**: The prep batch suggestion relies on a greedy value-density heuristic that misses the optimal combination of whole orders fitting within the prep-time capacity, leaving valuable tickets unselected.
-- **Task**: Implement an optimal 0/1 knapsack selection algorithm in `choose_prep_batch` that maximizes total ticket value within the given prep-time limit.
+- **Task**: Implement an optimal 0/1 knapsack selection algorithm in `choose_prep_batch` in `planner.py` that maximizes total ticket value within the given prep-time limit.
 
 #### Issue 5: Order Total Omits Selected Item Modifiers
 - **User Symptom**: When guests customize an item by adding modifiers (such as adding avocado for $2 to the smoky chicken sandwich), the calculated order total only accounts for the base item price, omitting modifier costs.
-- **Task**: Update `order_total` to include the price of each selected modifier for every unit in the line item when calculating the total bill.
+- **Task**: Update `order_total` in `pricing.py` to include the price of each selected modifier for every unit in the line item when calculating the total bill.
 
 #### Issue 6: Order Status Transitions Bypass Kitchen Workflow Steps
 - **User Symptom**: Orders can skip essential intermediate kitchen statuses (e.g., jumping directly from `new` to `ready` or reopening completed orders), disrupting kitchen operations and order integrity.
-- **Task**: Update `transition_order` to enforce that orders advance strictly one step at a time (`new` → `preparing` → `ready` → `completed`), rejecting any invalid transition by raising a `ValueError` without altering the order.
+- **Task**: Update `transition_order` in `orders.py` to enforce that orders advance strictly one step at a time (`new` → `preparing` → `ready` → `completed`), rejecting any invalid transition by raising a `ValueError` without altering the order.
 
 ---
 

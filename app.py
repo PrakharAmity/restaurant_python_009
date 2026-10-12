@@ -2,8 +2,12 @@ from copy import deepcopy
 
 from flask import Flask, jsonify, render_template, request
 
+from analytics import best_sellers
 from data import MENU, ORDERS
-from service import best_sellers, choose_prep_batch, kitchen_queue, order_total, transition_order
+from kitchen import kitchen_queue
+from orders import transition_order
+from planner import choose_prep_batch
+from pricing import order_total
 
 app = Flask(__name__)
 orders = deepcopy(ORDERS)

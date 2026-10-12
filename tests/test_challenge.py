@@ -1,6 +1,11 @@
 import pytest
 
-from service import best_sellers, choose_prep_batch, kitchen_queue, order_total, search_menu_items, transition_order
+from analytics import best_sellers
+from catalog import search_menu_items
+from kitchen import kitchen_queue
+from orders import transition_order
+from planner import choose_prep_batch
+from pricing import order_total
 
 
 def expect_equal(actual, expected, message):
