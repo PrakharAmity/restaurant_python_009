@@ -2,7 +2,8 @@
 
 ## Description
 
-Goodfield Kitchen is an interactive restaurant operations dashboard built for managing live pickup, delivery, and dine-in orders during service. It allows staff to browse the menu catalog, build and place tickets, track kitchen queue urgency, monitor best-selling dishes, and optimize prep batch planning using deterministic in-memory fixtures. It runs as a lightweight Flask HTTP service with a browser interface and an in-memory restaurant operational data store.
+Goodfield Kitchen is an interactive restaurant operations dashboard built with Python Flask and vanilla JavaScript for managing live pickup, delivery, and dine-in orders.
+It provides menu catalog search, kitchen ticket queue prioritization, best-selling dish analytics, and prep batch knapsack optimization using deterministic in-memory fixtures.
 
 ## Repository Structure
 
@@ -34,46 +35,44 @@ restaurant-order-dashboard/
 
 ## Bugs and Bug Locations
 
-These are the six behavioral bug surfaces covered by the challenge. The named locations identify the owning implementation areas for debugging and review.
-
 ### 1. Menu search fails on non-alphabetical menu items
 
-- **Bug location:** `catalog.py`, `search_menu_items`
+- **Bug location:** `catalog.py`
 - **How to observe it:** Search for "sandwich" in the order creation modal or call `search_menu_items("sandwich")`.
 - **Failure:** Binary search assumes alphabetical ordering, failing to return matching items because menu entries are grouped by category.
 - **Expected:** Substring search returns all matching menu items case-insensitively, regardless of menu configuration or category ordering.
 
 ### 2. Popular dishes ranking undercounts quantities and repeated orders
 
-- **Bug location:** `analytics.py`, `best_sellers`
+- **Bug location:** `analytics.py`
 - **How to observe it:** Review the "Guest favorites" panel or inspect sales history aggregation.
 - **Failure:** Collapsing order line items into a set discards item quantities and repeated order entries, undercounting popular dishes.
 - **Expected:** Tally the actual units sold across all order lines in sales history and maintain deterministic ordering for ties.
 
 ### 3. Kitchen queue sorts tickets in reverse urgency
 
-- **Bug location:** `kitchen.py`, `kitchen_queue`
+- **Bug location:** `kitchen.py`
 - **How to observe it:** Inspect the "Kitchen pulse" panel or call `kitchen_queue()`.
 - **Failure:** Tickets are sorted in ascending priority order instead of descending, and FIFO order is not maintained for tickets with equal urgency.
 - **Expected:** Tickets are ordered by urgency (priority) in descending order, preserving first-in, first-out (FIFO) sequence on equal priority.
 
 ### 4. Prep planning selects suboptimal ticket batches
 
-- **Bug location:** `planner.py`, `choose_prep_batch`
+- **Bug location:** `planner.py`
 - **How to observe it:** Check the prep batch suggestion for a capacity of 10 minutes.
 - **Failure:** The greedy value-density heuristic selects suboptimal tickets (e.g., `#1101`), leaving higher-value combinations unselected.
 - **Expected:** Optimal 0/1 knapsack selection finds the global best combination of whole tickets that maximizes total value within the prep capacity (tickets `#1102` and `#1103`).
 
 ### 5. Order total omits selected item modifiers
 
-- **Bug location:** `pricing.py`, `order_total`; surfaced by `app.py`, `/api/orders`
+- **Bug location:** `pricing.py`
 - **How to observe it:** Place an order with modifiers (such as adding avocado for $2 to the smoky chicken sandwich).
 - **Failure:** The subtotal calculation only accounts for base item prices and ignores modifier charges.
 - **Expected:** The subtotal includes the price of each selected modifier for every unit in the line item.
 
 ### 6. Order status transitions bypass kitchen workflow steps
 
-- **Bug location:** `orders.py`, `transition_order`; surfaced by `app.py`, `PATCH /api/orders/<order_id>`
+- **Bug location:** `orders.py`
 - **How to observe it:** Attempt an invalid status transition (e.g., jumping directly from `new` to `ready` or updating a completed ticket).
 - **Failure:** Any requested status is accepted without validation, skipping kitchen steps or reopening completed orders.
 - **Expected:** Orders strictly advance one step at a time (`new` → `preparing` → `ready` → `completed`), rejecting any invalid transition by raising a `ValueError`.
